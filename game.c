@@ -27,10 +27,10 @@ char game_note(){
 		case 1:
 			fputs("DOWN\n", stdout);
 			return DOWN;
-		case 3:
+		case 2:
 			fputs("RIGHT\n", stdout);
 			return RIGHT;
-		case 4:
+		case 3:
 			fputs("LEFT\n", stdout);
 			return LEFT;
 	}
@@ -41,7 +41,7 @@ char game_get_hit(char note){
 	
 	user_hit = getch();
 	
-	if(user_hit == 224){
+	if(user_hit == -32){
 		user_hit = getch();
 		
 		if(user_hit == note){
@@ -57,6 +57,7 @@ void game_check_jud(char jud){
 		puts("miss!");
 	else
 		puts("good!");
+	putch('\n');	
 }
 
 

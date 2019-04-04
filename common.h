@@ -3,8 +3,8 @@
 
 #define UP 72
 #define DOWN 80
-#define RIGHT 75
-#define LEFT 77
+#define RIGHT 77
+#define LEFT 75
 
 #include <stdio.h>
 #include <stdlib.h>
