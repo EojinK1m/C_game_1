@@ -11,8 +11,6 @@ void game_play(){
 		note = game_note();
 		jud = game_get_hit(note);
 		game_check_jud(jud);
-		
-		
 	}
 	
 }
@@ -39,7 +37,7 @@ char game_note(){
 char game_get_hit(char note){
 	char user_hit;
 	
-	user_hit = getch();
+	if(kbhit()!=0)user_hit = getch();
 	
 	if(user_hit == -32){
 		user_hit = getch();
@@ -60,7 +58,21 @@ void game_check_jud(char jud){
 	putch('\n');	
 }
 
+int game_check_time(int mdoe){ //리턴값 수정해야 함 
+	static long start, end;
+	
+	if(mode == -1){
+		start = clock();
+	}
+	else if(mode == 1){
+		end = clock();
+	}
+	else{
+		return (start-end);
+	}
+}
 
+	
 
 		
 
