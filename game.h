@@ -1,11 +1,15 @@
 #ifndef GAME_
 #define GAME_
 void game_play();
-char game_note();
-char game_get_hit(char);
-void game_check_jud(char);
-int game_check_time();
 
+void game_create_note();
+void game_get_hit();
+long game_check_time(int);
+
+void game_update_screen();
+void game_print_note();
+void game_print_jud();
+void game_print_limit_time();
 
 #endif
 

@@ -2,63 +2,82 @@
 #include "game.h"
 #include <time.h>
 
+int note;
+int jud;
+long time_limit;
+
+/* 
+
+*/
+
+
 void game_play(){
 	srand((unsigned int)time(NULL));
-	char note;
-	char jud;
+	time_limit = 700;
 	
 	while(1){	
-		note = game_note();
-		jud = game_get_hit(note);
-		game_check_jud(jud);
+		game_create_note();
+		
+		game_check_time(-1);
+		while(1){
+			game_get_hit();
+
+			game_check_time(1);
+			
+			game_update_screen();
+
+					
+			if(game_check_time(0) > time_limit){
+				jud = MISS;
+				break;
+			}
+			else if((jud != -1)) break;			
+		}
+		game_update_screen();
+
 	}
-	
 }
 
-char game_note(){
-	char note = rand()%4;
-	
-	switch(note){
+void game_create_note(){
+	switch(rand()%4){
 		case 0:
-			fputs("UP\n", stdout);
-			return UP;
+			note = UP;
+			break;
 		case 1:
-			fputs("DOWN\n", stdout);
-			return DOWN;
+			note = DOWN;
+			break;
 		case 2:
-			fputs("RIGHT\n", stdout);
-			return RIGHT;
+			note = RIGHT;
+			break;
 		case 3:
-			fputs("LEFT\n", stdout);
-			return LEFT;
+			note = LEFT;
+			break;
 	}
 }
 
-char game_get_hit(char note){
+void game_get_hit(){ // -
 	char user_hit;
 	
-	if(kbhit()!=0)user_hit = getch();
-	
-	if(user_hit == -32){
+	if(kbhit()!=0){
 		user_hit = getch();
 		
-		if(user_hit == note){
-			return 1;
+		if(user_hit == -32){
+			user_hit = getch();
+			
+			if(user_hit == note){
+				jud = GOOD;
+			}
 		}
+		else{
+			jud = MISS;
+		}
+		
+		return;
 	}
-	
-	return 0;
+	jud = -1;	
 }
 
-void game_check_jud(char jud){
-	if(jud == 0)
-		puts("miss!");
-	else
-		puts("good!");
-	putch('\n');	
-}
-
-int game_check_time(int mdoe){ //리턴값 수정해야 함 
+long game_check_time(int mode){ //mode.//      -1 = start//      -1 = end//   0 = return_time 
 	static long start, end;
 	
 	if(mode == -1){
@@ -67,15 +86,70 @@ int game_check_time(int mdoe){ //리턴값 수정해야 함
 	else if(mode == 1){
 		end = clock();
 	}
-	else{
-		return (start-end);
+	else if(mode == 0){
+		return end-start;
 	}
 }
 
+void game_print_note(){	
+		switch(note){		
+			case UP:
+				puts("UP");
+				break;
+			case DOWN:
+				puts("DOWN");
+				break;
+			case RIGHT:
+				puts("RIGHT");
+				break;
+			case LEFT:
+				puts("LEFT");
+				break;
+	}
+}
+
+
+void game_print_jud(){ //name change 
+	if(jud == MISS)
+		puts("miss!");
+	else if(jud == GOOD)
+		puts("good!");
+	putch('\n');	
+}
+
+
+void game_update_screen(){
+	system("cls");
+	game_print_jud();
+	game_print_note();
+	game_print_limit_time();
+	
+}
+
+void game_print_limit_time(){
+	int i;
+	long peice_limit = time_limit/10;
+	long l_time = time_limit - game_check_time(0) ;
+	int time_block =  l_time / peice_limit;
+
+	if(l_time % peice_limit != 0)time_block++;
+	
+	for(i = 0; i < time_block; i++){
+		putch('■');
+	}
+	putch('\n');
+}
+
+
+	
+	
+		
+		
+	
 	
 
 		
 
 
 	
-	
+

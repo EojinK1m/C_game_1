@@ -6,6 +6,9 @@
 #define RIGHT 77
 #define LEFT 75
 
+#define MISS 111
+#define GOOD 222
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
