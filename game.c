@@ -15,7 +15,7 @@ void game_play(){
 	srand((unsigned int)time(NULL));
 	time_limit = 700;
 	
-	while(1){	
+	while(1){
 		game_create_note();
 		
 		game_check_time(-1);
@@ -25,8 +25,6 @@ void game_play(){
 			game_check_time(1);
 			
 			game_update_screen();
-
-					
 			if(game_check_time(0) > time_limit){
 				jud = MISS;
 				break;
@@ -49,6 +47,7 @@ void game_create_note(){
 		case 2:
 			note = RIGHT;
 			break;
+			
 		case 3:
 			note = LEFT;
 			break;
@@ -66,15 +65,16 @@ void game_get_hit(){ // -
 			
 			if(user_hit == note){
 				jud = GOOD;
+	
+				return;
 			}
 		}
-		else{
-			jud = MISS;
-		}
 		
+		jud = MISS;
+	
 		return;
 	}
-	jud = -1;	
+	jud = -1;
 }
 
 long game_check_time(int mode){ //mode.//      -1 = start//      -1 = end//   0 = return_time 
@@ -88,6 +88,24 @@ long game_check_time(int mode){ //mode.//      -1 = start//      -1 = end//   0 
 	}
 	else if(mode == 0){
 		return end-start;
+	}
+}
+
+
+void game_update_screen(){
+	static long t =0;
+	
+	if(t == 0){
+		t = clock();
+	}
+	
+	if(clock() - t >= 45){
+		system("cls");
+		game_print_jud();
+		game_print_note();
+		game_print_limit_time();
+		
+		t = 0;
 	}
 }
 
@@ -105,25 +123,22 @@ void game_print_note(){
 			case LEFT:
 				puts("LEFT");
 				break;
+			
 	}
 }
 
-
 void game_print_jud(){ //name change 
-	if(jud == MISS)
+	static int before_jud;
+	
+	if(jud != -1){
+		before_jud = jud;
+	}
+	
+	if(before_jud == MISS)
 		puts("miss!");
-	else if(jud == GOOD)
+	else if(before_jud == GOOD)
 		puts("good!");
 	putch('\n');	
-}
-
-
-void game_update_screen(){
-	system("cls");
-	game_print_jud();
-	game_print_note();
-	game_print_limit_time();
-	
 }
 
 void game_print_limit_time(){
@@ -135,7 +150,7 @@ void game_print_limit_time(){
 	if(l_time % peice_limit != 0)time_block++;
 	
 	for(i = 0; i < time_block; i++){
-		putch('бс');
+		printf("бс"); 
 	}
 	putch('\n');
 }
