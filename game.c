@@ -1,15 +1,11 @@
 #include "common.h"
 #include "game.h"
 #include <time.h>
+#include <windows.h>
 
 int note;
 int jud;
 long time_limit;
-
-/* 
-
-*/
-
 
 void game_play(){
 	srand((unsigned int)time(NULL));
@@ -21,12 +17,16 @@ void game_play(){
 		game_check_time(-1);
 		while(1){
 			game_get_hit();
+	
 
 			game_check_time(1);
 			
 			game_update_screen();
+				
+
 			if(game_check_time(0) > time_limit){
 				jud = MISS;
+				Sleep(50);
 				break;
 			}
 			else if((jud != -1)) break;			
@@ -65,13 +65,16 @@ void game_get_hit(){ // -
 			
 			if(user_hit == note){
 				jud = GOOD;
-	
+				Sleep(50);
+							 
 				return;
 			}
+			
 		}
 		
-		jud = MISS;
-	
+		jud = MISS;			
+		Sleep(50);
+
 		return;
 	}
 	jud = -1;
@@ -99,9 +102,10 @@ void game_update_screen(){
 		t = clock();
 	}
 	
-	if(clock() - t >= 45){
+	if(clock() - t >= 50){
 		system("cls");
 		game_print_jud();
+	
 		game_print_note();
 		game_print_limit_time();
 		
@@ -128,7 +132,7 @@ void game_print_note(){
 }
 
 void game_print_jud(){ //name change 
-	static int before_jud;
+	static int before_jud = -1;
 	
 	if(jud != -1){
 		before_jud = jud;
@@ -136,9 +140,12 @@ void game_print_jud(){ //name change
 	
 	if(before_jud == MISS)
 		puts("miss!");
-	else if(before_jud == GOOD)
+	else if(before_jud == GOOD){
 		puts("good!");
+	}
 	putch('\n');	
+	
+
 }
 
 void game_print_limit_time(){
@@ -155,16 +162,4 @@ void game_print_limit_time(){
 	putch('\n');
 }
 
-
-	
-	
-		
-		
-	
-	
-
-		
-
-
-	
 
