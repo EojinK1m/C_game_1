@@ -8,6 +8,7 @@
 
 #define MISS 111
 #define GOOD 222
+#define PERFECT 333
 
 #include <stdio.h>
 #include <stdlib.h>

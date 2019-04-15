@@ -9,7 +9,7 @@ long time_limit;
 
 void game_play(){
 	srand((unsigned int)time(NULL));
-	time_limit = 1000;
+	time_limit = 2000;
 	
 	while(1){
 		game_create_note();
@@ -37,7 +37,7 @@ void game_play(){
 }
 
 void game_create_note(){
-	switch(/*rand()%4*/0){
+	switch(rand()%4){
 		case 0:
 			note = UP;
 			break;
@@ -64,7 +64,13 @@ void game_get_hit(){ // -
 			user_hit = getch();
 			
 			if(user_hit == note){
-				jud = GOOD;	
+				if(get_time_blocks() >= 7){
+					jud = PERFECT;
+				}
+				else{
+					jud = GOOD;
+				}
+				
 				game_update_screen(1);
 				
 				return;
@@ -73,7 +79,6 @@ void game_get_hit(){ // -
 		}		
 		jud = MISS;	
 		game_update_screen(1);
-		puts("MISSED");
 
 		return;
 	}
@@ -144,6 +149,10 @@ void game_print_jud(){ //name change
 	else if(before_jud == GOOD){
 		puts("good!");
 	}
+	else if(before_jud == PERFECT){
+		puts("PERFECT!!!!");
+	}
+	
 	putch('\n');	
 	
 
@@ -151,16 +160,21 @@ void game_print_jud(){ //name change
 
 void game_print_limit_time(){
 	int i;
-	long peice_limit = time_limit/10;
-	long l_time = time_limit - game_check_time(0) ;
-	int time_block =  l_time / peice_limit;
-
-	if(l_time % peice_limit != 0)time_block++;
-	
-	for(i = 0; i < time_block; i++){
+	int time_blocks = get_time_blocks();
+		
+	for(i = 0; i < time_blocks; i++){
 		printf("бс"); 
 	}
 	putch('\n');
 }
 
+int get_time_blocks(){
+	long peice_limit = time_limit/10;
+	long l_time = time_limit - game_check_time(0) ;
+	int time_blocks =  l_time / peice_limit;
+
+	if(l_time % peice_limit != 0)time_blocks++;
+	
+	return time_blocks;
+}
 
