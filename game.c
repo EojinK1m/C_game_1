@@ -9,7 +9,7 @@ long time_limit;
 
 void game_play(){
 	srand((unsigned int)time(NULL));
-	time_limit = 700;
+	time_limit = 1000;
 	
 	while(1){
 		game_create_note();
@@ -21,23 +21,23 @@ void game_play(){
 
 			game_check_time(1);
 			
-			game_update_screen();
+			game_update_screen(0);
 				
 
 			if(game_check_time(0) > time_limit){
 				jud = MISS;
-				Sleep(50);
+				game_update_screen(1); 
 				break;
 			}
 			else if((jud != -1)) break;			
 		}
-		game_update_screen();
+		game_update_screen(0);
 
 	}
 }
 
 void game_create_note(){
-	switch(rand()%4){
+	switch(/*rand()%4*/0){
 		case 0:
 			note = UP;
 			break;
@@ -64,20 +64,21 @@ void game_get_hit(){ // -
 			user_hit = getch();
 			
 			if(user_hit == note){
-				jud = GOOD;
-				Sleep(50);
-							 
+				jud = GOOD;	
+				game_update_screen(1);
+				
 				return;
 			}
 			
-		}
-		
-		jud = MISS;			
-		Sleep(50);
+		}		
+		jud = MISS;	
+		game_update_screen(1);
+		puts("MISSED");
 
 		return;
 	}
-	jud = -1;
+	if(jud != -1)	
+		jud = -1;
 }
 
 long game_check_time(int mode){ //mode.//      -1 = start//      -1 = end//   0 = return_time 
@@ -95,14 +96,14 @@ long game_check_time(int mode){ //mode.//      -1 = start//      -1 = end//   0 
 }
 
 
-void game_update_screen(){
-	static long t =0;
+void game_update_screen(int mod){ //  mod == 1, forced output!
+	static long t =0; 
 	
 	if(t == 0){
 		t = clock();
 	}
 	
-	if(clock() - t >= 50){
+	if(clock() - t >= 40 || mod == 1){
 		system("cls");
 		game_print_jud();
 	
