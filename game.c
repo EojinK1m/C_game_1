@@ -7,9 +7,21 @@ int note;
 int jud;
 long time_limit;
 
-void game_play(){
+void game_play(int level){
 	srand((unsigned int)time(NULL));
-	time_limit = 2000;
+	
+	switch(level){
+		case 1:
+			time_limit = 1000;		
+			break;
+		case 2:
+			time_limit = 750;
+			break;
+		case 3:
+			time_limit = 450;
+			break;
+	}
+	
 	
 	while(1){
 		game_create_note();

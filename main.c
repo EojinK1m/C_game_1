@@ -2,8 +2,11 @@
 #include "game.h"
 
 int main(){
-
-	game_play();
+	int level;
+	
+	scanf("%d", &level);
+	 
+	game_play(level);
 	
 	return 0;
 }
