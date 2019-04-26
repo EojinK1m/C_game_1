@@ -6,19 +6,23 @@
 int note;
 int jud;
 long time_limit;
+int up_speed;
 
 void game_play(int level){
 	srand((unsigned int)time(NULL));
 	
 	switch(level){
 		case 1:
-			time_limit = 1000;		
+			time_limit = 1500;		
+			up_speed = 1;
 			break;
 		case 2:
-			time_limit = 750;
+			time_limit = 1000;
+			up_speed = 2;
 			break;
 		case 3:
-			time_limit = 450;
+			time_limit = 600;
+			up_speed = 2;
 			break;
 	}
 	
@@ -30,12 +34,9 @@ void game_play(int level){
 		while(1){
 			game_get_hit();
 	
-
 			game_check_time(1);
 			
 			game_update_screen(0);
-				
-
 			if(game_check_time(0) > time_limit){
 				jud = MISS;
 				game_update_screen(1); 
@@ -76,6 +77,8 @@ void game_get_hit(){ // -
 			user_hit = getch();
 			
 			if(user_hit == note){
+				game_speed_up(); //speed UP_!!!
+				
 				if(get_time_blocks() >= 7){
 					jud = PERFECT;
 				}
@@ -126,6 +129,7 @@ void game_update_screen(int mod){ //  mod == 1, forced output!
 	
 		game_print_note();
 		game_print_limit_time();
+		printf("\ntime_limit = %d\n", time_limit);
 		
 		t = 0;
 	}
@@ -175,7 +179,8 @@ void game_print_limit_time(){
 	int time_blocks = get_time_blocks();
 		
 	for(i = 0; i < time_blocks; i++){
-		printf("бс"); 
+		//puts("бс"); 
+		printf("бс");
 	}
 	putch('\n');
 }
@@ -189,4 +194,29 @@ int get_time_blocks(){
 	
 	return time_blocks;
 }
+
+void game_speed_up(){
+	static long minimum_time = 0;
+		
+	if(minimum_time == 0){ 	
+		if(time_limit <= 600){
+			minimum_time = 300;
+		}
+		else if(time_limit <= 1000){
+			minimum_time = 500;
+		}
+		else{
+			minimum_time = 800;
+		}
+	}
+	
+	if(time_limit >= minimum_time){
+		time_limit -= up_speed;
+	}
+}
+
+		
+		
+
+
 
